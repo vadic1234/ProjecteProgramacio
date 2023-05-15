@@ -79,19 +79,28 @@ public class ProducteDAO_MySQL implements ProducteDAO {
 
     @Override
     public void updateProducte(Producte p) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("UPDATE producte SET nom = ?, descripcio = ?, preu_copmra, preu_venta WHERE codi_producte = ?");
+        ps.setString(1,p.getNom());
+        ps.setString(2,p.getDescripcio());
+        ps.setFloat(3,p.getPreuCompra());
+        ps.setFloat(4,p.getPreuVenta());
+        ps.setString(5,p.getCodiProducte());
 
+        ps.executeUpdate();
     }
 
     @Override
     public void deleteProducte(Producte p) throws SQLException {
-
+        PreparedStatement ps = conn.prepareStatement("DELETE * FROM producte WHERE codi_producte = ?");
+        ps.setString(1,p.getCodiProducte());
+        ps.executeUpdate();
     }
 
     @Override
     public void deleteProducte(String codiProducte) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("delete * from producte where codi_producte = ?");
+        PreparedStatement ps = conn.prepareStatement("DELETE * FROM producte WHERE codi_producte = ?");
         ps.setString(1,codiProducte);
-        int rowCount = ps.executeUpdate();
+        ps.executeUpdate();
 
     }
 }
