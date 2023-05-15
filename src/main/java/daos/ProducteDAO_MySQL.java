@@ -89,6 +89,9 @@ public class ProducteDAO_MySQL implements ProducteDAO {
 
     @Override
     public void deleteProducte(String codiProducte) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("delete * from producte where codi_producte = ?");
+        ps.setString(1,codiProducte);
+        int rowCount = ps.executeUpdate();
 
     }
 }
