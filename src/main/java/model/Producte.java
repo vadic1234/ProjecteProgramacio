@@ -13,5 +13,4 @@ public class Producte {
     private String descripcio;
     private float preuCompra;
     private float preuVenta;
-
 }
