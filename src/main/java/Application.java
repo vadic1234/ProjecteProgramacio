@@ -18,26 +18,39 @@ public class Application {
         Scanner lector = new Scanner(System.in);            //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
 
-        do
-        {
+        do {
             mostrarMenu();
             opcio = lector.nextInt();
 
-            switch (opcio)
-            {
-                case 1:     mostrarMaquina();       break;
-                case 2:     comprarProducte();      break;
+            switch (opcio) {
+                case 1:
+                    mostrarMaquina();
+                    break;
+                case 2:
+                    comprarProducte();
+                    break;
 
-                case 10:    mostrarInventari();     break;
-                case 11:    afegirProductes();      break;
-                case 12:    modificarMaquina();     break;
-                case 13:    mostrarBenefici();      break;
+                case 10:
+                    mostrarInventari();
+                    break;
+                case 11:
+                    afegirProductes();
+                    break;
+                case 12:
+                    modificarMaquina();
+                    break;
+                case 13:
+                    mostrarBenefici();
+                    break;
 
-                case -1:    System.out.println("Bye...");           break;
-                default:    System.out.println("Opció no vàlida");
+                case -1:
+                    System.out.println("Bye...");
+                    break;
+                default:
+                    System.out.println("Opció no vàlida");
             }
 
-        }while(opcio != -1);
+        } while (opcio != -1);
 
     }
 
@@ -66,24 +79,40 @@ public class Application {
 
         //Exemple de insersió SENSE ENTRADA DE DADES NI COMPROVACIÓ REPETITS
 
-        Producte p = new Producte("pomaP", "Pink Lady", "Poma Pink Lady envasada",
-                0.2f, 1.0f);
+        Producte producte;
+        boolean crearProducte;
+
+        do {
+            Scanner scanner = new Scanner(System.in);
+
+            crearProducte = false;
+            producte = IO.crearProducte();
+
+            System.out.println(producte.toString());
+            System.out.print("\nEstan totes les dades correctes? (s/n): ");
+            String resposta = scanner.nextLine();
+
+            if (resposta.equalsIgnoreCase("s")) crearProducte = true;
+
+        } while (!crearProducte);
 
         try {
-
             //Demanem de guardar el producte p a la BD
-            producteDAO.createProducte(p);
+            producteDAO.createProducte(producte);
 
             //Agafem tots els productes de la BD i els mostrem (per compvoar que s'ha afegit)
+            System.out.println("Has afegit un nou producte! Productes actuals:");
             ArrayList<Producte> productes = producteDAO.readProductes();
-            for (Producte prod: productes)
-            {
-                System.out.println(prod);
+            for (Producte prod : productes) {
+                System.out.println("- " + prod);
             }
 
-        } catch (SQLException e) {          //TODO: tractar les excepcions
-            e.printStackTrace();
-            System.out.println(e.getErrorCode());
+        } catch (SQLException e) {
+            int errorCode = e.getErrorCode();
+
+            if (errorCode == 1062) {
+                System.out.println("El producte ja existeix! hauries de canviar la clau primària.");
+            }
         }
 
     }
@@ -93,9 +122,10 @@ public class Application {
         try {
             //Agafem tots els productes de la BD i els mostrem
             ArrayList<Producte> productes = producteDAO.readProductes();
-            for (Producte prod: productes)
-            {
-                System.out.println(prod);
+
+            System.out.println("Inventari:");
+            for (Producte prod : productes) {
+                System.out.println("- " + prod);
             }
 
         } catch (SQLException e) {          //TODO: tractar les excepcions
