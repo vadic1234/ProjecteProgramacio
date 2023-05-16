@@ -29,7 +29,7 @@ public class SlotDAO_MySQL implements SlotDAO {
 
     @Override
     public void createSlot(Slot slot) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO producte VALUES(?,?,?)");
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO slot VALUES(?,?,?)");
 
         ps.setInt(1,slot.getPosicio());
         ps.setInt(2,slot.getQuantitat());
@@ -65,7 +65,7 @@ public class SlotDAO_MySQL implements SlotDAO {
 
     @Override
     public void updateSlot(Slot slot) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("UPDATE slot SET posicio = ?, quantitat = ?, WHERE codi = ?");
+        PreparedStatement ps = conn.prepareStatement("UPDATE slot SET posicio = ?, quantitat = ? WHERE codi = ?");
         ps.setInt(1,slot.getPosicio());
         ps.setInt(2,slot.getQuantitat());
         ps.setString(3,slot.getCodi());
