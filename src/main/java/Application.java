@@ -43,7 +43,6 @@ public class Application {
 
 
     private static void modificarMaquina() {
-
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
@@ -53,7 +52,6 @@ public class Application {
     }
 
     private static void afegirProductes() {
-
         /**
          *      Crear un nou producte amb les dades que ens digui l'operari
          *      Agefir el producte a la BD (tenir en compte les diferents situacions que poden passar)
