@@ -42,7 +42,7 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
 
         for (int i = 0; i < llistaMaquina.size(); i++) {
             System.out.printf("%-10s  ", llistaMaquina.get(i).getSlot_posicio());
-            System.out.printf("%5s %*10s\n", llistaMaquina.get(i).getNom_producte(), tabular, llistaMaquina.get(i).getQuantitat_stock());
+            System.out.printf("%5s %10s\n", llistaMaquina.get(i).getNom_producte(), tabular, llistaMaquina.get(i).getQuantitat_stock());
 
         }
 

@@ -12,7 +12,7 @@ public class ProducteDAO_MySQL implements ProducteDAO {
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DB_ROUTE = "jdbc:mysql://localhost:3306/expenedora";
     private static final String DB_USER = "root";
-    private static final String DB_PWD = "1324";
+    private static final String DB_PWD = "vadic2004";
     private Connection conn = null;
     public ProducteDAO_MySQL()
     {
