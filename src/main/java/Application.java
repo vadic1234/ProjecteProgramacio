@@ -1,5 +1,5 @@
-import daos.ProducteDAO;
-import daos.ProducteDAO_MySQL;
+import daos.*;
+import model.Maquina;
 import model.Producte;
 
 import java.sql.SQLException;
@@ -12,6 +12,8 @@ public class Application {
     //En general -->        //TODO: Afegir un sistema de Logging per les classes.
 
     private static ProducteDAO producteDAO = new ProducteDAO_MySQL();            //TODO: passar a una classe DAOFactory
+    private static SlotDAO slotDAO = new SlotDAO_MySQL();
+    private static MaquinaDAO maquinaDAO = new MaquinaDAO_MySQL();
 
     public static void main(String[] args) {
 
@@ -23,38 +25,19 @@ public class Application {
             opcio = lector.nextInt();
 
             switch (opcio) {
-                case 1:
-                    mostrarMaquina();
-                    break;
-                case 2:
-                    comprarProducte();
-                    break;
-
-                case 10:
-                    mostrarInventari();
-                    break;
-                case 11:
-                    afegirProductes();
-                    break;
-                case 12:
-                    modificarMaquina();
-                    break;
-                case 13:
-                    mostrarBenefici();
-                    break;
-
-                case -1:
-                    System.out.println("Bye...");
-                    break;
-                default:
-                    System.out.println("Opció no vàlida");
+                case 1 -> mostrarMaquina();
+                case 2 -> comprarProducte();
+                case 10 -> mostrarInventari();
+                case 11 -> afegirProductes();
+                case 12 -> modificarMaquina();
+                case 13 -> mostrarBenefici();
+                case -1 -> System.out.println("Ens veiem!");
+                default -> System.out.println("Opció no vàlida");
             }
 
         } while (opcio != -1);
 
     }
-
-
     private static void modificarMaquina() {
         /**
          * Ha de permetre:
@@ -65,23 +48,10 @@ public class Application {
     }
 
     private static void afegirProductes() {
-        /**
-         *      Crear un nou producte amb les dades que ens digui l'operari
-         *      Agefir el producte a la BD (tenir en compte les diferents situacions que poden passar)
-         *          El producte ja existeix
-         *              - Mostrar el producte que té el mateix codiProducte
-         *              - Preguntar si es vol actualitzar o descartar l'operació
-         *          El producte no existeix
-         *              - Afegir el producte a la BD
-         *
-         *     Podeu fer-ho amb llenguatge SQL o mirant si el producte existeix i després inserir o actualitzar
-         */
-
-        //Exemple de insersió SENSE ENTRADA DE DADES NI COMPROVACIÓ REPETITS
-
         Producte producte;
         boolean crearProducte;
 
+        //Crear el producte i inicialitzar-lo
         do {
             Scanner scanner = new Scanner(System.in);
 
@@ -96,11 +66,10 @@ public class Application {
 
         } while (!crearProducte);
 
+        //Afegir el producte a la base de dades
         try {
-            //Demanem de guardar el producte p a la BD
             producteDAO.createProducte(producte);
 
-            //Agafem tots els productes de la BD i els mostrem (per compvoar que s'ha afegit)
             System.out.println("Has afegit un nou producte! Productes actuals:");
             ArrayList<Producte> productes = producteDAO.readProductes();
             for (Producte prod : productes) {
@@ -110,7 +79,7 @@ public class Application {
         } catch (SQLException e) {
             int errorCode = e.getErrorCode();
 
-            if (errorCode == 1062) {
+            if (errorCode == 1062) { //En cas de que el producte ja existeixi, mostrar l'error
                 System.out.println("El producte ja existeix! hauries de canviar la clau primària.");
             }
         }
@@ -118,7 +87,6 @@ public class Application {
     }
 
     private static void mostrarInventari() {
-
         try {
             //Agafem tots els productes de la BD i els mostrem
             ArrayList<Producte> productes = producteDAO.readProductes();
@@ -144,6 +112,8 @@ public class Application {
          * (stock de la màquina es manté guardat entre reinicis del programa)
          */
 
+
+
     }
 
     private static void mostrarMaquina() {
@@ -159,6 +129,12 @@ public class Application {
          * 3            Coca-Cola Zero          10
          * 4            Aigua 0.5L              7
          */
+
+        try {
+            maquinaDAO.mostrarMaquina();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void mostrarMenu() {
