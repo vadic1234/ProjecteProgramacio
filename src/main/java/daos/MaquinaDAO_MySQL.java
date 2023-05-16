@@ -3,6 +3,7 @@ package daos;
 import model.Maquina;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class MaquinaDAO_MySQL implements MaquinaDAO {
 
@@ -25,18 +26,20 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
     }
     @Override
     public void mostrarMaquina() throws SQLException {
+        ArrayList<Maquina> llistaMaquina = new ArrayList<>();
         PreparedStatement pss = conn.prepareStatement("SELECT posicio,nom,quantitat FROM slot, producte WHERE codi = codi_producte");
         ResultSet rss = pss.executeQuery();
-        Maquina maquina = new Maquina();
         while(rss.next())
         {
-            String posicioSlot = rss.getString(1) + " " + rss.getString(2) + " " + rss.getString(3);
-            maquina.getLlistaMaquina().add(posicioSlot);
+            Maquina maquina = new Maquina();
+            maquina.setSlot_posicio(rss.getString(1));
+            maquina.setNom_producte(rss.getString(2));
+            maquina.setQuantitat_stock(rss.getString(3));
         }
 
 
-        for(int i = 0; i < maquina.getLlistaMaquina().size();i++){
-            System.out.printf(maquina.getLlistaMaquina().get(i));
+        for(int i = 0; i < llistaMaquina.size();i++){
+            System.out.printf(llistaMaquina.get(i).getSlot_posicio() + "\t\t" + llistaMaquina.get(i).getNom_producte() + "\t\t" + llistaMaquina.get(i).getQuantitat_stock());
         }
     }
 

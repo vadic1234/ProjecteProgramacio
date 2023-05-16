@@ -11,7 +11,8 @@ import java.util.ArrayList;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Maquina { //Classe màquina per guardar la informació que es vol mostrar
-
-    private ArrayList<String> llistaMaquina = new ArrayList<>();
+    private String slot_posicio;
+    private String nom_producte;
+    private String quantitat_stock;
 
 }
