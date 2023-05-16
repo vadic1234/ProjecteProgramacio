@@ -18,6 +18,5 @@ public interface SlotDAO {
 
     public void deleteSlot(Slot slot) throws SQLException;
 
-    public void deleteSlot(String posicio) throws SQLException;
-
+    void deleteSlot(int posicio) throws SQLException;
 }
