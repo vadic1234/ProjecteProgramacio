@@ -28,19 +28,19 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
     public void mostrarMaquina() throws SQLException {
 
         ArrayList<Maquina> llistaMaquina = new ArrayList<>();
-        PreparedStatement pss = conn.prepareStatement("SELECT posicio,nom,quantitat FROM slot, producte WHERE codi = codi_producte");
+        PreparedStatement pss = conn.prepareStatement("SELECT posicio,nom,quantitat FROM slot, producte WHERE slot.codi_producte = producte.codi_producte");
         ResultSet rss = pss.executeQuery();
         while (rss.next()) {
             Maquina maquina = new Maquina();
             maquina.setSlot_posicio(rss.getString(1));
             maquina.setNom_producte(rss.getString(2));
             maquina.setQuantitat_stock(rss.getString(3));
+
+            llistaMaquina.add(maquina);
         }
 
-
-        for (int i = 0; i < llistaMaquina.size(); i++) {
-            System.out.printf(llistaMaquina.get(i).getSlot_posicio() + "\t\t" + llistaMaquina.get(i).getNom_producte() + "\t\t" + llistaMaquina.get(i).getQuantitat_stock());
-
+        for (Maquina maquina : llistaMaquina) {
+            System.out.printf(maquina.getSlot_posicio() + "\t\t" + maquina.getNom_producte() + "\t\t" + maquina.getQuantitat_stock() + "\n");
         }
 
     }

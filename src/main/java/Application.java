@@ -27,16 +27,37 @@ public class Application {
             switch (opcio) {
                 case 1 -> mostrarMaquina();
                 case 2 -> comprarProducte();
-                case 10 -> mostrarInventari();
-                case 11 -> afegirProductes();
-                case 12 -> modificarMaquina();
-                case 13 -> mostrarBenefici();
-                case -1 -> System.out.println("Ens veiem!");
+                case 3 -> mostrarInventari();
+                case 4 -> afegirProductes();
+                case 5 -> modificarMaquina();
+                case 6 -> mostrarBenefici();
+                case 0 -> System.out.println("Ens veiem!");
                 default -> System.out.println("Opció no vàlida");
             }
 
-        } while (opcio != -1);
+        } while (opcio != 0);
 
+    }
+
+    private static void mostrarMenu() {
+        System.out.println("\nMenú de la màquina expenedora");
+        System.out.println("=============================");
+        System.out.println("Selecciona la operació a realitzar introduïnt el número corresponent: \n");
+
+
+        //Opcions per client / usuari
+        System.out.println("- 1: Mostrar inventari de la màquina");
+        System.out.println("- 2: Comprar un producte");
+
+        //Opcions per administrador / manteniment
+        System.out.println();
+        System.out.println("- 3: Mostrar llistat de productes disponibles");
+        System.out.println("- 4: Afegir producte");
+        System.out.println("- 5: Modificar inventari");
+        System.out.println("- 6: Mostrar benefici total");
+
+        System.out.println();
+        System.out.println("- 0 Sortir de l'aplicació");
     }
     private static void modificarMaquina() {
         /**
@@ -113,7 +134,6 @@ public class Application {
          */
 
 
-
     }
 
     private static void mostrarMaquina() {
@@ -135,27 +155,6 @@ public class Application {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private static void mostrarMenu() {
-        System.out.println("\nMenú de la màquina expenedora");
-        System.out.println("=============================");
-        System.out.println("Selecciona la operació a realitzar introduïnt el número corresponent: \n");
-
-
-        //Opcions per client / usuari
-        System.out.println("[1] Mostrar Posició / Nom producte / Stock de la màquina");
-        System.out.println("[2] Comprar un producte");
-
-        //Opcions per administrador / manteniment
-        System.out.println();
-        System.out.println("[10] Mostrar llistat productes disponibles (BD)");
-        System.out.println("[11] Afegir productes disponibles");
-        System.out.println("[12] Assignar productes / stock a la màquina");
-        System.out.println("[13] Mostrar benefici");
-
-        System.out.println();
-        System.out.println("[-1] Sortir de l'aplicació");
     }
 
     private static void mostrarBenefici() {
