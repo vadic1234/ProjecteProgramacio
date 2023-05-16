@@ -1,12 +1,11 @@
 package daos;
 
-import model.Producte;
+import model.Slot;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
-public class ProducteDAO_MySQL implements ProducteDAO {
+public class SlotDAO_MySQL implements SlotDAO {
 
     //Dades de connexió a la base de dades
     private static final String DB_DRIVER = "com.mysql.cj.jdbc.Driver";
@@ -15,7 +14,7 @@ public class ProducteDAO_MySQL implements ProducteDAO {
     private static final String DB_PWD = "vadic2004";
     private Connection conn = null;
 
-    public ProducteDAO_MySQL()
+    public SlotDAO_MySQL()
     {
         try {
             Class.forName(DB_DRIVER);
@@ -27,79 +26,65 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         }
     }
 
+
     @Override
-    public void createProducte(Producte p) throws SQLException {
+    public void createSlot(Slot slot) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("INSERT INTO producte VALUES(?,?,?)");
 
-        PreparedStatement ps = conn.prepareStatement("INSERT INTO producte VALUES(?,?,?,?,?)");
-
-        ps.setString(1,p.getCodiProducte());
-        ps.setString(2,p.getNom());
-        ps.setString(3,p.getDescripcio());
-        ps.setFloat(4,p.getPreuCompra());
-        ps.setFloat(5,p.getPreuVenta());
+        ps.setInt(1,slot.getPosicio());
+        ps.setInt(2,slot.getQuantitat());
+        ps.setString(3,slot.getCodi());
 
         int rowCount = ps.executeUpdate();
     }
 
     @Override
-    public Producte readProducte() throws SQLException {
+    public Slot readSlot() throws SQLException {
         return null;
     }
 
     @Override
-    public ArrayList<Producte> readProductes() throws SQLException {
-        ArrayList<Producte> llistaProductes = new ArrayList<Producte>();
-        PreparedStatement ps = conn.prepareStatement("SELECT * FROM producte");
+    public ArrayList<Slot> readSlots() throws SQLException {
+        ArrayList<Slot> llistaSlots = new ArrayList<Slot>();
+        PreparedStatement ps = conn.prepareStatement("SELECT * FROM slot");
 
         ResultSet rs = ps.executeQuery();
         while(rs.next())
         {
-            Producte p = new Producte();
+            Slot slot = new Slot();
 
-            /**
-            p.setCodiProducte(rs.getString(codi_producte));
-            p.setNom(rs.getString(nom));
-            p.setDescripcio(rs.getString(descripcio));
-            p.setPreuCompra(rs.getFloat(preu_compra));
-            p.setPreuVenta(rs.getFloat(preu_venta));
-            **/
+            slot.setPosicio(rs.getInt(1));
+            slot.setQuantitat(rs.getInt(2));
+            slot.setCodi(rs.getString(3));
 
-            p.setCodiProducte(rs.getString(1));
-            p.setNom(rs.getString(2));
-            p.setDescripcio(rs.getString(3));
-            p.setPreuCompra(rs.getFloat(4));
-            p.setPreuVenta(rs.getFloat(5));
-
-            llistaProductes.add(p);
+            llistaSlots.add(slot);
         }
 
-        return llistaProductes;
+        return llistaSlots;
     }
 
     @Override
-    public void updateProducte(Producte p) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("UPDATE producte SET nom = ?, descripcio = ?, preu_copmra, preu_venta WHERE codi_producte = ?");
-        ps.setString(1,p.getNom());
-        ps.setString(2,p.getDescripcio());
-        ps.setFloat(3,p.getPreuCompra());
-        ps.setFloat(4,p.getPreuVenta());
-        ps.setString(5,p.getCodiProducte());
+    public void updateSlot(Slot slot) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("UPDATE slot SET posicio = ?, quantitat = ?, WHERE codi = ?");
+        ps.setInt(1,slot.getPosicio());
+        ps.setInt(2,slot.getQuantitat());
+        ps.setString(3,slot.getCodi());
 
+        ps.executeUpdate();
+
+    }
+
+    @Override
+    public void deleteSlot(Slot slot) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("DELETE * FROM slot WHERE posicio = ?");
+        ps.setInt(1,slot.getPosicio());
         ps.executeUpdate();
     }
 
     @Override
-    public void deleteProducte(Producte p) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("DELETE * FROM producte WHERE codi_producte = ?");
-        ps.setString(1,p.getCodiProducte());
+    public void deleteSlot(int posicio) throws SQLException {
+        PreparedStatement ps = conn.prepareStatement("DELETE * FROM slot WHERE posicio = ?");
+        ps.setInt(1,posicio);
         ps.executeUpdate();
-    }
-
-    @Override
-    public void deleteProducte(String codiProducte) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("DELETE * FROM producte WHERE codi_producte = ?");
-        ps.setString(1,codiProducte);
-        ps.executeUpdate();
-
     }
 }
