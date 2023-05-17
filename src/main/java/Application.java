@@ -5,7 +5,6 @@ import model.Producte;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
-
 public class Application {
 
     //Passar al DAO -->     //TODO: llegir les propietats de la BD d'un fitxer de configuració (Properties)
@@ -14,6 +13,7 @@ public class Application {
     private static ProducteDAO producteDAO = new ProducteDAO_MySQL();            //TODO: passar a una classe DAOFactory
     private static SlotDAO slotDAO = new SlotDAO_MySQL();
     private static MaquinaDAO maquinaDAO = new MaquinaDAO_MySQL();
+    private static Maquina maquina = new Maquina();
 
     public static void main(String[] args) {
 
@@ -43,7 +43,6 @@ public class Application {
         System.out.println("\nMenú de la màquina expenedora");
         System.out.println("=============================");
         System.out.println("Selecciona la operació a realitzar introduïnt el número corresponent: \n");
-
 
         //Opcions per client / usuari
         System.out.println("- 1: Mostrar inventari de la màquina");
@@ -132,24 +131,63 @@ public class Application {
          * Tingueu en compte que quan s'ha venut un producte HA DE QUEDAR REFLECTIT a la BD que n'hi ha un menys.
          * (stock de la màquina es manté guardat entre reinicis del programa)
          */
+        Scanner scanner = new Scanner(System.in);
+        boolean sortir;
+
+        System.out.println("Vols entrar per producte o pel nom? (producte/nom)");
+        String opcio = scanner.nextLine();
+
+        do {
+            sortir = false;
+            switch (opcio) {
+                case "producte" -> {
+                    Producte producte;
+                    boolean crearProducte;
+                    //Crear el producte i inicialitzar-lo
+                    do {
+                        crearProducte = false;
+                        producte = IO.crearProducte();
+
+                        System.out.println(producte.toString());
+                        System.out.print("\nEstan totes les dades correctes? (s/n): ");
+                        String resposta = scanner.nextLine();
+
+                        if (resposta.equalsIgnoreCase("s")) crearProducte = true;
+
+                        try {
+                            Float preuVenda = producteDAO.comprarProducte(producte);
+                            maquinaDAO.modificarMaquina();
+
+                        } catch (SQLException e) {
+                            //si el producte no existeix waragrea
+                            throw new RuntimeException(e);
+                        }
+
+                    } while (!crearProducte);
 
 
+                    sortir = true;
+                }
+
+                case "nom" -> {
+                    System.out.println("Entra el nom");
+                    String nomProducte = scanner.nextLine();
+
+                    try {
+                        producteDAO.comprarProducte(nomProducte);
+                    } catch (SQLException e) {
+                        //si el producte no existeix waragrea
+                        throw new RuntimeException(e);
+                    }
+
+                    sortir = true;
+                }
+                default -> System.out.println("Opció incorrecta");
+            }
+        } while (!sortir);
     }
 
     private static void mostrarMaquina() {
-
-        /** IMPORTANT **
-         * S'està demanat NOM DEL PRODUCTE no el codiProducte (la taula Slot conté posició, codiProducte i stock)
-         * també s'acceptarà mostrant només el codi producte, però comptarà menys.
-         *
-         * Posicio      Producte                Quantitat disponible
-         * ===========================================================
-         * 1            Patates 3D              8
-         * 2            Doritos Tex Mex         6
-         * 3            Coca-Cola Zero          10
-         * 4            Aigua 0.5L              7
-         */
-
         try {
             maquinaDAO.mostrarMaquina();
         } catch (SQLException e) {

@@ -21,4 +21,8 @@ public interface ProducteDAO {
 
     public void deleteProducte(String codiProducte) throws SQLException;
 
+    public float comprarProducte(Producte producte) throws SQLException;
+
+    public float comprarProducte(String nomProducte) throws SQLException;
+
 }

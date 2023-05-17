@@ -101,4 +101,34 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         ps.executeUpdate();
 
     }
+
+    @Override
+    public float comprarProducte(Producte producte) throws SQLException {
+        PreparedStatement selectPreuVenda = conn.prepareStatement("SELECT preu_venta FROM producte WHERE codi_producte = ?");
+        selectPreuVenda.setString(1,producte.getCodiProducte());
+        ResultSet preuVenda = selectPreuVenda.executeQuery();
+
+        PreparedStatement ps = conn.prepareStatement("UPDATE slot SET quantitat = quantitat-1 WHERE codi_producte = ?");
+        ps.setString(1,producte.getCodiProducte());
+        ps.executeUpdate();
+
+        return preuVenda.getFloat(1);
+    }
+
+    @Override
+    public float comprarProducte(String nomProducte) throws SQLException {
+        PreparedStatement selectPreuVenda = conn.prepareStatement("SELECT preu_venta FROM producte WHERE nom = ?");
+        selectPreuVenda.setString(1,nomProducte);
+        ResultSet preuVenda = selectPreuVenda.executeQuery();
+
+        PreparedStatement selectCodiProducte = conn.prepareStatement("SELECT codi_producte FROM producte WHERE nom = ?");
+        selectCodiProducte.setString(1,nomProducte);
+        ResultSet resultSet = selectCodiProducte.executeQuery();
+
+        PreparedStatement updateQuantitat = conn.prepareStatement("UPDATE slot SET quantitat = quantitat-1 WHERE codi_producte = ?");
+        updateQuantitat.setString(1,resultSet.getString(1));
+        updateQuantitat.executeUpdate();
+
+        return preuVenda.getFloat(1);
+    }
 }
