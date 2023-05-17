@@ -50,9 +50,4 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
     public void modificarMaquina() {
 
     }
-
-    @Override
-    public void mostrarBeneficis() {
-
-    }
 }

@@ -220,5 +220,32 @@ public class Application {
          * S'ha de crear una nova taula a la BD on es vagi realitzant un registre de les vendes o els beneficis al
          * llarg de la vida de la màquina.
          */
+
+        ArrayList<String> beneficis = llegirFitxer(fitxerBenefii);
+
+        float beneficiTotal = 0;
+        for (String s : beneficis) {
+            float benefici = Float.parseFloat(s);
+
+            beneficiTotal = beneficiTotal+benefici;
+        }
+        System.out.println(beneficiTotal);
+    }
+
+    private static ArrayList<String> llegirFitxer(Path fitxerResultatsMarato) {
+
+        ArrayList<String> resultatAtleta = new ArrayList<>();
+
+        try (Scanner lector = new Scanner(fitxerResultatsMarato)) {
+            while (lector.hasNextLine()) {
+                String linea = lector.nextLine();
+
+                resultatAtleta.add(linea);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e);
+        }
+
+        return resultatAtleta;
     }
 }
