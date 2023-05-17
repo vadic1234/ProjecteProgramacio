@@ -2,11 +2,14 @@ import daos.*;
 import model.Maquina;
 import model.Producte;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 public class Application {
-
     //Passar al DAO -->     //TODO: llegir les propietats de la BD d'un fitxer de configuració (Properties)
     //En general -->        //TODO: Afegir un sistema de Logging per les classes.
 
@@ -14,15 +17,17 @@ public class Application {
     private static SlotDAO slotDAO = new SlotDAO_MySQL();
     private static MaquinaDAO maquinaDAO = new MaquinaDAO_MySQL();
     private static Maquina maquina = new Maquina();
+    final static File beneficisCompres = new File("files/beneficisMaquina.txt");
+    final static Path fitxerBenefii = Paths.get("files/beneficisMaquina.txt");
+    final static Scanner lector = new Scanner(System.in);
 
     public static void main(String[] args) {
-
-        Scanner lector = new Scanner(System.in);            //TODO: passar Scanner a una classe InputHelper
+                   //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
 
         do {
             mostrarMenu();
-            opcio = lector.nextInt();
+            opcio = Integer.parseInt(lector.nextLine());
 
             switch (opcio) {
                 case 1 -> mostrarMaquina();
@@ -131,14 +136,14 @@ public class Application {
          * Tingueu en compte que quan s'ha venut un producte HA DE QUEDAR REFLECTIT a la BD que n'hi ha un menys.
          * (stock de la màquina es manté guardat entre reinicis del programa)
          */
-        Scanner scanner = new Scanner(System.in);
+
         boolean sortir;
 
-        System.out.println("Vols entrar per producte o pel nom? (producte/nom)");
-        String opcio = scanner.nextLine();
-
         do {
+            System.out.println("Vols entrar per producte o pel nom? (producte/nom)");
+            String opcio = lector.nextLine();
             sortir = false;
+
             switch (opcio) {
                 case "producte" -> {
                     Producte producte;
@@ -150,33 +155,34 @@ public class Application {
 
                         System.out.println(producte.toString());
                         System.out.print("\nEstan totes les dades correctes? (s/n): ");
-                        String resposta = scanner.nextLine();
+                        String resposta = lector.nextLine();
 
                         if (resposta.equalsIgnoreCase("s")) crearProducte = true;
 
                         try {
-                            Float preuVenda = producteDAO.comprarProducte(producte);
+                            float preuVenda = producteDAO.comprarProducte(producte);
                             maquinaDAO.modificarMaquina();
-
+                            IO.escriureDades(beneficisCompres,Float.toString(preuVenda));
                         } catch (SQLException e) {
-                            //si el producte no existeix waragrea
+                            //si el producte no existeix
                             throw new RuntimeException(e);
                         }
 
                     } while (!crearProducte);
-
 
                     sortir = true;
                 }
 
                 case "nom" -> {
                     System.out.println("Entra el nom");
-                    String nomProducte = scanner.nextLine();
+                    String nomProducte = lector.nextLine();
 
                     try {
-                        producteDAO.comprarProducte(nomProducte);
+                        float preuVenda = producteDAO.comprarProducte(nomProducte);
+
+                        IO.escriureDades(beneficisCompres,Float.toString(preuVenda));
                     } catch (SQLException e) {
-                        //si el producte no existeix waragrea
+                        //si el producte no existeix
                         throw new RuntimeException(e);
                     }
 
@@ -185,6 +191,9 @@ public class Application {
                 default -> System.out.println("Opció incorrecta");
             }
         } while (!sortir);
+
+
+
     }
 
     private static void mostrarMaquina() {

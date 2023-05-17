@@ -1,8 +1,16 @@
 import model.Producte;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 public class IO {
+
+    final Path fitxerResultatsMarato = Paths.get("fitxers/ResultatsMitjaMarato.txt");
     /**
      * Es demana per consola un Producte a l'usuari, es tracten els errors
      * @return Es retorna un producte SEMPRE.
@@ -77,5 +85,13 @@ public class IO {
         } while (preuVentaErroni);
 
         return new Producte(codi,nom,descripcio,preuCompra,preuVenta);
+    }
+
+    public static void escriureDades(File fitxer, String text) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fitxer, true))){
+            writer.append(text).append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

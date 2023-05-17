@@ -118,17 +118,30 @@ public class ProducteDAO_MySQL implements ProducteDAO {
     @Override
     public float comprarProducte(String nomProducte) throws SQLException {
         PreparedStatement selectPreuVenda = conn.prepareStatement("SELECT preu_venta FROM producte WHERE nom = ?");
-        selectPreuVenda.setString(1,nomProducte);
+        selectPreuVenda.setString(1, nomProducte);
         ResultSet preuVenda = selectPreuVenda.executeQuery();
 
         PreparedStatement selectCodiProducte = conn.prepareStatement("SELECT codi_producte FROM producte WHERE nom = ?");
-        selectCodiProducte.setString(1,nomProducte);
+        selectCodiProducte.setString(1, nomProducte);
         ResultSet resultSet = selectCodiProducte.executeQuery();
 
-        PreparedStatement updateQuantitat = conn.prepareStatement("UPDATE slot SET quantitat = quantitat-1 WHERE codi_producte = ?");
-        updateQuantitat.setString(1,resultSet.getString(1));
+        String codiProducte = null;
+        if (resultSet.next()) {
+            codiProducte = resultSet.getString("codi_producte");
+        }
+
+        PreparedStatement updateQuantitat = conn.prepareStatement("UPDATE slot SET quantitat = quantitat - 1 WHERE codi_producte = ?");
+        updateQuantitat.setString(1, codiProducte);
         updateQuantitat.executeUpdate();
 
-        return preuVenda.getFloat(1);
+        if (preuVenda.next()) {
+            float preuVenta = preuVenda.getFloat("preu_venta");
+            System.out.println(preuVenta);
+            return preuVenta;
+        } else {
+            throw new RuntimeException("No se encontró el precio de venta para el producto: " + nomProducte);
+        }
+
+
     }
 }
