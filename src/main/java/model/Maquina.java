@@ -14,5 +14,6 @@ public class Maquina { //Classe màquina per guardar la informació que es vol m
     private String slot_posicio;
     private String nom_producte;
     private String quantitat_stock;
+    private Float beneficis;
 
 }
