@@ -26,7 +26,6 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
 
     @Override
     public void mostrarMaquina() throws SQLException {
-        int tabular = 10;
         ArrayList<Maquina> llistaMaquina = new ArrayList<>();
         PreparedStatement pss = conn.prepareStatement("SELECT posicio,nom,quantitat FROM slot, producte WHERE slot.codi_producte = producte.codi_producte");
         ResultSet rss = pss.executeQuery();
@@ -41,7 +40,7 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
 
         for (Maquina maquina : llistaMaquina) {
             System.out.printf("%-10s  ", maquina.getSlot_posicio());
-            System.out.printf("%5s %10s\n", maquina.getNom_producte(), tabular, maquina.getQuantitat_stock());
+            System.out.printf("%5s %10s\n", maquina.getNom_producte(), maquina.getQuantitat_stock());
         }
 
     }
@@ -73,6 +72,42 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
                 System.err.println("Camp clau entrat no vàlid");
             }
 
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void afegirStock(String codi_prod, int quantitatStock) {
+        try {
+            PreparedStatement afegirStock = conn.prepareStatement("UPDATE slot SET quantitat = ? WHERE codi_producte = ?");
+            afegirStock.setInt(1, quantitatStock);
+            afegirStock.setString(2, codi_prod);
+            afegirStock.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("El codi entrat no està a la màquina");
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public void afegirRanura() {
+        try {
+            PreparedStatement obtenerRanura = conn.prepareStatement("SELECT posicio FROM slot ORDER BY posicio DESC limit 1");
+            ResultSet rs = obtenerRanura.executeQuery();
+
+            if (rs.next()) {
+                int numPosicio = rs.getInt("posicio");
+                numPosicio++; // Incrementar el valor de posición en 1
+
+                PreparedStatement afegirRanura = conn.prepareStatement("INSERT INTO slot(posicio) VALUES(?)");
+                afegirRanura.setInt(1, numPosicio);
+                afegirRanura.executeUpdate();
+            } else {
+                // Manejar la situación cuando no se encuentran registros en el ResultSet
+            }
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
