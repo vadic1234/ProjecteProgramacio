@@ -3,7 +3,6 @@ import model.Maquina;
 import model.Producte;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -62,6 +61,12 @@ public class Application {
         System.out.println("- 0 Sortir de l'aplicació");
     }
     private static void modificarMaquina() {
+        System.out.println("Entra les posicions que vols canviar: ");
+        System.out.println("Posició 1");
+        int pos1 = Integer.parseInt(lector.nextLine());
+        System.out.println("Posició 2");
+        int pos2 = Integer.parseInt(lector.nextLine());
+        maquinaDAO.modificarMaquina(pos1,pos2);
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
@@ -149,7 +154,6 @@ public class Application {
 
                         try {
                             float preuVenda = producteDAO.comprarProducte(producte);
-                            maquinaDAO.modificarMaquina();
                             IO.escriureDades(beneficisCompres,Float.toString(preuVenda));
                         } catch (SQLException e) {
                             //si el producte no existeix
@@ -203,6 +207,7 @@ public class Application {
             beneficiTotal = beneficiTotal+benefici;
         }
         System.out.println( beneficiTotal);
+        System.out.println("El benefici total es de " + beneficiTotal + "€");
     }
 
     private static ArrayList<String> llegirFitxer(Path fitxerResultatsMarato) {
