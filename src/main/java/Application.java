@@ -3,7 +3,6 @@ import model.Maquina;
 import model.Producte;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
@@ -64,7 +63,8 @@ public class Application {
         System.out.println("- 0 Sortir de l'aplicació");
     }
     private static void modificarMaquina() {
-        maquinaDAO.modificarMaquina();
+        System.out.println("Entra el nom del producte que vols assignar: ");
+        maquinaDAO.modificarMaquina(lector.nextLine());
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
@@ -153,7 +153,7 @@ public class Application {
 
                         try {
                             float preuVenda = producteDAO.comprarProducte(producte);
-                            maquinaDAO.modificarMaquina();
+                            maquinaDAO.modificarMaquina(lector.nextLine());
                             IO.escriureDades(beneficisCompres,Float.toString(preuVenda));
                         } catch (SQLException e) {
                             //si el producte no existeix

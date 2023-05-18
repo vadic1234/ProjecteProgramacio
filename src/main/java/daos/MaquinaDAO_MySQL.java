@@ -47,10 +47,17 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
     }
 
     @Override
-    public void modificarMaquina() {
+    public void modificarMaquina(String nomProducte) {
         try {
-            PreparedStatement ps = conn.prepareStatement("UPDATE slot SET codi_producte = ? WHERE codi = ?");
-            ps.setInt(1,slot.getPosicio());
+            PreparedStatement obtenirProducte = conn.prepareStatement("SELECT codi_producte FROM producte WHERE nom = ?");
+            obtenirProducte.setString(1,nomProducte);
+            ResultSet rs = obtenirProducte.executeQuery();
+            String codiProducte = rs.getString(1);
+            PreparedStatement ps = conn.prepareStatement("UPDATE slot SET codi_producte = ? WHERE posicio = ?");
+            ps.setString(1,codiProducte);
+            ps.setInt(2,posicio);
+            ResultSet actualitzarSlot =
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
