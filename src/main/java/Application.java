@@ -128,15 +128,6 @@ public class Application {
 
     private static void comprarProducte() {
 
-        /**
-         * Mínim: es realitza la compra indicant la posició on es troba el producte que es vol comprar
-         * Ampliació (0.5 punts): es permet entrar el NOM del producte per seleccionar-lo (abans cal mostrar els
-         * productes disponibles a la màquina)
-         *
-         * Tingueu en compte que quan s'ha venut un producte HA DE QUEDAR REFLECTIT a la BD que n'hi ha un menys.
-         * (stock de la màquina es manté guardat entre reinicis del programa)
-         */
-
         boolean sortir;
 
         do {
@@ -206,21 +197,6 @@ public class Application {
 
     private static void mostrarBenefici() {
 
-        /** Ha de mostrar el benefici de la sessió actual de la màquina, cada producte té un cost de compra
-         * i un preu de venda. La suma d'aquesta diferència de tots productes que s'han venut ens donaran el benefici.
-         *
-         * Simplement s'ha de donar el benefici actual des de l'últim cop que s'ha engegat la màquina. (es pot fer
-         * amb un comptador de benefici que s'incrementa per cada venda que es fa)
-         */
-
-        /** AMPLIACIÓ **
-         * En entrar en aquest menú ha de permetre escollir entre dues opcions: veure el benefici de la sessió actual o
-         * tot el registre de la màquina.
-         *
-         * S'ha de crear una nova taula a la BD on es vagi realitzant un registre de les vendes o els beneficis al
-         * llarg de la vida de la màquina.
-         */
-
         ArrayList<String> beneficis = llegirFitxer(fitxerBenefii);
 
         float beneficiTotal = 0;
@@ -229,7 +205,7 @@ public class Application {
 
             beneficiTotal = beneficiTotal+benefici;
         }
-        System.out.println(beneficiTotal);
+        System.out.println("El benefici total es de " + beneficiTotal + "€");
     }
 
     private static ArrayList<String> llegirFitxer(Path fitxerResultatsMarato) {
