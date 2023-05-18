@@ -100,13 +100,11 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
 
             if (rs.next()) {
                 int numPosicio = rs.getInt("posicio");
-                numPosicio++; // Incrementar el valor de posición en 1
+                numPosicio++;
 
                 PreparedStatement afegirRanura = conn.prepareStatement("INSERT INTO slot(posicio) VALUES(?)");
                 afegirRanura.setInt(1, numPosicio);
                 afegirRanura.executeUpdate();
-            } else {
-                // Manejar la situación cuando no se encuentran registros en el ResultSet
             }
 
         } catch (SQLException e) {

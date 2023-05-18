@@ -17,15 +17,8 @@ public class Application {
     private static final Maquina maquina = new Maquina();
     final static File beneficisCompres = new File("files/beneficisMaquina.txt");
     final static Path fitxerBenefii = Paths.get("files/beneficisMaquina.txt");
-    final static File configuracioMYSQL = new File("files/configMYSQL.txt");
-    final static Path fitxerConfiguracioMYSQL = Paths.get("files/configMYSQL.txt");
     final static Scanner lector = new Scanner(System.in);
     public static void main(String[] args) {
-
-        if (!configuracioMYSQL.exists()) {
-            IO.escriureDades(configuracioMYSQL,"");
-        }
-
                    //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
 
