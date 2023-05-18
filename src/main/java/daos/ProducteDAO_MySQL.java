@@ -26,6 +26,11 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         }
     }
 
+    /**
+     * Metode que permet inserir un nou producte a la base de dades. Les dades d'aquest producte són les que el metode passa com a parametre.
+     * @param p producte amb els atributs entrats per teclat
+     * @throws SQLException
+     */
     @Override
     public void createProducte(Producte p) throws SQLException {
 
@@ -45,6 +50,11 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         return null;
     }
 
+    /**
+     * Metode que mostre els productes que hi han a la base de dades. Primer es fa una consulta on el resultat retornat s'anirà guardant a una llista de productes que més tard es mostrarà.
+     * @return
+     * @throws SQLException
+     */
     @Override
     public ArrayList<Producte> readProductes() throws SQLException {
         ArrayList<Producte> llistaProductes = new ArrayList<Producte>();
@@ -54,14 +64,6 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         while(rs.next())
         {
             Producte p = new Producte();
-
-            /**
-            p.setCodiProducte(rs.getString(codi_producte));
-            p.setNom(rs.getString(nom));
-            p.setDescripcio(rs.getString(descripcio));
-            p.setPreuCompra(rs.getFloat(preu_compra));
-            p.setPreuVenta(rs.getFloat(preu_venta));
-            **/
 
             p.setCodiProducte(rs.getString(1));
             p.setNom(rs.getString(2));
@@ -75,9 +77,15 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         return llistaProductes;
     }
 
+    /**
+     * Metode per actualitzar un producte. L'actualització consisteix en intercanviar les dades del producte amb les noves dades entrat per l'usuari amb l'anterior ja entrat a la base de dades
+     * @param p producte amb noves dades entrades per l'usuari
+     * @throws SQLException
+     */
+
     @Override
     public void updateProducte(Producte p) throws SQLException {
-        PreparedStatement ps = conn.prepareStatement("UPDATE producte SET nom = ?, descripcio = ?, preu_copmra, preu_venta WHERE codi_producte = ?");
+        PreparedStatement ps = conn.prepareStatement("UPDATE producte SET nom = ?, descripcio = ?, preu_copmra = ?, preu_venta = ? WHERE codi_producte = ?");
         ps.setString(1,p.getNom());
         ps.setString(2,p.getDescripcio());
         ps.setFloat(3,p.getPreuCompra());
@@ -87,6 +95,11 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         ps.executeUpdate();
     }
 
+    /**
+     * Metode que borra un producte segons el seu codi.
+     * @param p producte enviat com a parametre amb dades entrades per l'usuari
+     * @throws SQLException
+     */
     @Override
     public void deleteProducte(Producte p) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("DELETE * FROM producte WHERE codi_producte = ?");
@@ -94,6 +107,11 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         ps.executeUpdate();
     }
 
+    /**
+     * Metode que borra un producte segons el seu codi.
+     * @param codiProducte cadena de text entrada per l'usuari
+     * @throws SQLException
+     */
     @Override
     public void deleteProducte(String codiProducte) throws SQLException {
         PreparedStatement ps = conn.prepareStatement("DELETE * FROM producte WHERE codi_producte = ?");
@@ -101,6 +119,13 @@ public class ProducteDAO_MySQL implements ProducteDAO {
         ps.executeUpdate();
 
     }
+
+    /**
+     * Metode que permet comprar un producte. Quan el producte es comprat, es resta el seu estoc automàticament i tambè es retorna el seu benefici.
+     * @param producte producte que es vol comprar entrat per l'usuari.
+     * @return
+     * @throws SQLException
+     */
 
     @Override
     public float comprarProducte(Producte producte) throws SQLException {
@@ -114,6 +139,13 @@ public class ProducteDAO_MySQL implements ProducteDAO {
 
         return preuVenda.getFloat(1);
     }
+
+    /**
+     * Metode que permet comprar un producte pel seu codi. Restar el seu estoc i retornar el benefici guanyat.
+     * @param nomProducte
+     * @return
+     * @throws SQLException
+     */
 
     @Override
     public float comprarProducte(String nomProducte) throws SQLException {
