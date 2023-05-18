@@ -11,14 +11,21 @@ import java.util.Scanner;
 public class Application {
     //Passar al DAO -->     //TODO: llegir les propietats de la BD d'un fitxer de configuració (Properties)
     //En general -->        //TODO: Afegir un sistema de Logging per les classes.
-    private static ProducteDAO producteDAO = new ProducteDAO_MySQL();            //TODO: passar a una classe DAOFactory
-    private static SlotDAO slotDAO = new SlotDAO_MySQL();
-    private static MaquinaDAO maquinaDAO = new MaquinaDAO_MySQL();
-    private static Maquina maquina = new Maquina();
+    private static final ProducteDAO producteDAO = new ProducteDAO_MySQL();            //TODO: passar a una classe DAOFactory
+    private static final SlotDAO slotDAO = new SlotDAO_MySQL();
+    private static final MaquinaDAO maquinaDAO = new MaquinaDAO_MySQL();
+    private static final Maquina maquina = new Maquina();
     final static File beneficisCompres = new File("files/beneficisMaquina.txt");
     final static Path fitxerBenefii = Paths.get("files/beneficisMaquina.txt");
+    final static File configuracioMYSQL = new File("files/configMYSQL.txt");
+    final static Path fitxerConfiguracioMYSQL = Paths.get("files/configMYSQL.txt");
     final static Scanner lector = new Scanner(System.in);
     public static void main(String[] args) {
+
+        if (!configuracioMYSQL.exists()) {
+            IO.escriureDades(configuracioMYSQL,"");
+        }
+
                    //TODO: passar Scanner a una classe InputHelper
         int opcio = 0;
 
@@ -146,7 +153,7 @@ public class Application {
                         crearProducte = false;
                         producte = IO.crearProducte();
 
-                        System.out.println(producte.toString());
+                        System.out.println(producte);
                         System.out.print("\nEstan totes les dades correctes? (s/n): ");
                         String resposta = lector.nextLine();
 
@@ -183,9 +190,6 @@ public class Application {
                 default -> System.out.println("Opció incorrecta");
             }
         } while (!sortir);
-
-
-
     }
 
     private static void mostrarMaquina() {
