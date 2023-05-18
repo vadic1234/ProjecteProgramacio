@@ -68,15 +68,34 @@ public class Application {
         System.out.println("- 0 Sortir de l'aplicació");
     }
     private static void modificarMaquina() {
-        System.out.println("Entra les posicions que vols canviar: ");
-        System.out.println("Posició 1");
-        int pos1 = Integer.parseInt(lector.nextLine());
-        System.out.println("Posició 2");
-        int pos2 = Integer.parseInt(lector.nextLine());
-        maquinaDAO.modificarMaquina(pos1,pos2);
+        System.out.println("1- Canviar posicions\n" +
+                "2- Afegir Stock\n" +
+                "3- Afegir ranures\n");
+        int opcioModificar = Integer.parseInt(lector.nextLine());
+        switch(opcioModificar){
+            case 1:
+                System.out.println("Entra les posicions que vols canviar: ");
+                System.out.println("Posició 1");
+                int pos1 = Integer.parseInt(lector.nextLine());
+                System.out.println("Posició 2");
+                int pos2 = Integer.parseInt(lector.nextLine());
+                maquinaDAO.modificarMaquina(pos1,pos2);
+                break;
+            case 2:
+                System.out.println("Entra el codi del producte del qual vol afegir stock: ");
+                String codiProd = lector.nextLine();
+                System.out.println("Quina quantitat vol afegir?");
+                int stockAAfegir = Integer.parseInt(lector.nextLine());
+                maquinaDAO.afegirStock(codiProd,stockAAfegir);
+                break;
+            case 3:
+                maquinaDAO.afegirRanura();
+                break;
+
+        }
+
         /**
          * Ha de permetre:
-         *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
          *      - modificar stock d'un producte que hi ha a la màquina
          *      - afegir més ranures a la màquina
          */
