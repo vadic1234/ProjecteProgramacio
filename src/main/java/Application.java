@@ -63,8 +63,12 @@ public class Application {
         System.out.println("- 0 Sortir de l'aplicació");
     }
     private static void modificarMaquina() {
-        System.out.println("Entra el nom del producte que vols assignar: ");
-        maquinaDAO.modificarMaquina(lector.nextLine());
+        System.out.println("Entra les posicions que vols canviar: ");
+        System.out.println("Posició 1");
+        int pos1 = Integer.parseInt(lector.nextLine());
+        System.out.println("Posició 2");
+        int pos2 = Integer.parseInt(lector.nextLine());
+        maquinaDAO.modificarMaquina(pos1,pos2);
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
@@ -153,7 +157,6 @@ public class Application {
 
                         try {
                             float preuVenda = producteDAO.comprarProducte(producte);
-                            maquinaDAO.modificarMaquina(lector.nextLine());
                             IO.escriureDades(beneficisCompres,Float.toString(preuVenda));
                         } catch (SQLException e) {
                             //si el producte no existeix

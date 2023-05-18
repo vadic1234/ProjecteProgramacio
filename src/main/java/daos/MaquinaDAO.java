@@ -4,5 +4,5 @@ import java.sql.SQLException;
 
 public interface MaquinaDAO {
     public void mostrarMaquina() throws SQLException;
-    public void modificarMaquina(String nomProducte);
+    public void modificarMaquina(int pos1, int pos2);
 }
