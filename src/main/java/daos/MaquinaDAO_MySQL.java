@@ -49,23 +49,30 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
     @Override
     public void modificarMaquina(int pos1, int pos2) {
         try {
-            PreparedStatement obtenirSlot1= conn.prepareStatement("SELECT posicio,quantitat, codi_producte FROM slot WHERE posicio = ?");
-            obtenirSlot1.setInt(1,pos1);
-            PreparedStatement obtenirSlot2= conn.prepareStatement("SELECT posicio,quantitat, codi_producte FROM slot WHERE posicio = ?");
-            obtenirSlot1.setInt(1,pos2);
+            PreparedStatement obtenirSlot1 = conn.prepareStatement("SELECT * FROM slot WHERE posicio = ?");
+            obtenirSlot1.setInt(1, pos1);
+
+            PreparedStatement obtenirSlot2 = conn.prepareStatement("SELECT * FROM slot WHERE posicio = ?");
+            obtenirSlot2.setInt(1, pos2);
+
             ResultSet rs1 = obtenirSlot1.executeQuery();
             ResultSet rs2 = obtenirSlot2.executeQuery();
 
-            PreparedStatement ps = conn.prepareStatement("UPDATE slot SET codi_producte = ? WHERE posicio = ?");
-            ps.setString(1,rs2.getString(3));
-            ps.setInt(2,pos1);
+            if (rs1.next() && rs2.next()) {
+                PreparedStatement ps = conn.prepareStatement("UPDATE slot SET codi_producte = ? WHERE posicio = ?");
+                ps.setString(1, rs2.getString("codi_producte"));
+                ps.setInt(2, pos1);
 
-            PreparedStatement ps2 = conn.prepareStatement("UPDATE slot SET codi_producte = ? WHERE posicio = ?");
-            ps2.setString(1,rs1.getString(3));
-            ps2.setInt(2,pos2);
+                PreparedStatement ps2 = conn.prepareStatement("UPDATE slot SET codi_producte = ? WHERE posicio = ?");
+                ps2.setString(1, rs1.getString("codi_producte"));
+                ps2.setInt(2, pos2);
 
-            ps.executeUpdate();
-            ps2.executeUpdate();
+                ps.executeUpdate();
+                ps2.executeUpdate();
+            } else {
+                System.err.println("Camp clau entrat no vàlid");
+            }
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
