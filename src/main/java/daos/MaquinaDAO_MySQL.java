@@ -24,6 +24,11 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
         }
     }
 
+    /**
+     * Metode que mostrà els slots, els productes i la seva quantitat d'una màquina.
+     * @throws SQLException
+     */
+
     @Override
     public void mostrarMaquina() throws SQLException {
         ArrayList<Maquina> llistaMaquina = new ArrayList<>();
@@ -45,6 +50,11 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
 
     }
 
+    /**
+     * Metode que permet intercanviar les posicions dels productes d'una màquina
+     * @param pos1 posició que es vol intercanviar
+     * @param pos2 posició que es vol intercanviar
+     */
     @Override
     public void modificarMaquina(int pos1, int pos2) {
         try {
@@ -78,6 +88,11 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
         }
     }
 
+    /**
+     * Metode que permet afegir stock a un producte
+     * @param codi_prod codi del producte passat com a parametre
+     * @param quantitatStock quantitat d'estoc passada com a parametre
+     */
     @Override
     public void afegirStock(String codi_prod, int quantitatStock) {
         try {
@@ -92,6 +107,9 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
 
     }
 
+    /**
+     * Metode que afegeix un slot nou sense cap producte
+     */
     @Override
     public void afegirRanura() {
         try {
