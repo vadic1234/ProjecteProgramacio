@@ -64,6 +64,7 @@ public class Application {
         System.out.println("- 0 Sortir de l'aplicació");
     }
     private static void modificarMaquina() {
+        maquinaDAO.modificarMaquina();
         /**
          * Ha de permetre:
          *      - modificar les posicions on hi ha els productes de la màquina (quin article va a cada lloc)
