@@ -96,7 +96,7 @@ public class MaquinaDAO_MySQL implements MaquinaDAO {
     @Override
     public void afegirStock(String codi_prod, int quantitatStock) {
         try {
-            PreparedStatement afegirStock = conn.prepareStatement("UPDATE slot SET quantitat = ? WHERE codi_producte = ?");
+            PreparedStatement afegirStock = conn.prepareStatement("UPDATE slot SET quantitat = quantitat + ? WHERE codi_producte = ?");
             afegirStock.setInt(1, quantitatStock);
             afegirStock.setString(2, codi_prod);
             afegirStock.executeUpdate();
